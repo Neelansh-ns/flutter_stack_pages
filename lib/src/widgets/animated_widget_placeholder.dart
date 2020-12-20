@@ -22,7 +22,7 @@ class AnimatedPlaceholder extends StatelessWidget {
       this.stackPageState = StackPageState.COLLAPSED,
       this.onBannerTapped,
       this.animationDuration = const Duration(milliseconds: 600),
-      this.animationCurve = Curves.easeIn})
+      this.animationCurve = Curves.decelerate})
       : super(key: key);
 
   @override
@@ -42,15 +42,20 @@ class AnimatedPlaceholder extends StatelessWidget {
               child: AnimatedSwitcher(
                   transitionBuilder: (child, animation) => FadeTransition(
                         opacity: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                            parent: animation,
-                            curve: Interval(0.5, 1.0, curve: Curves.decelerate))),
+                            parent: animation, curve: Interval(0.4, 1, curve: Curves.easeInOut))),
                         child: child,
                       ),
                   duration: Duration(milliseconds: 800),
                   reverseDuration: Duration(milliseconds: 800),
-                  switchInCurve: animationCurve,
-                  switchOutCurve: animationCurve,
-                  layoutBuilder: (currentChild, previousChildren) => currentChild,
+                  switchInCurve: Curves.easeIn,
+                  switchOutCurve: Curves.easeIn,
+                  layoutBuilder: (currentChild, previousChildren) => Stack(
+                        children: <Widget>[
+                          ...previousChildren,
+                          if (currentChild != null) currentChild,
+                        ],
+                        alignment: Alignment.topCenter,
+                      ),
                   child: _getChildFromState),
             ),
           ),
