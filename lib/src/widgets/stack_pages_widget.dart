@@ -8,9 +8,16 @@ import 'package:flutter_stack_pages/src/widgets/primary_button.dart';
 import 'package:rxdart/rxdart.dart';
 
 class StackPagesWidget extends StatefulWidget {
+  /// A [List] of [StackPage] containing the number of pages to be displayed in the stack.
   final List<StackPage> stackPages;
+
+  /// A [Function] to be executed on pressing the close Icon.
   final Function onClosePressed;
+
+  /// A [Color] for the background of underlying container of the stack.
   final Color baseBackgroundColor;
+
+  /// A [double] for the height of the banner of each page.
   final double headerHeight;
 
   StackPagesWidget({
@@ -18,46 +25,19 @@ class StackPagesWidget extends StatefulWidget {
     this.baseBackgroundColor,
     this.onClosePressed,
     this.headerHeight = 100,
-  });
+  }) : assert(stackPages != null);
 
   @override
   _StackPagesWidgetState createState() => _StackPagesWidgetState();
 }
 
 class _StackPagesWidgetState extends State<StackPagesWidget> {
+  /// A[BehaviorSubject] for adding page index data.
+
   BehaviorSubject<int> _selectedPage;
 
+  /// A[Stream] to listen to the currently selected page index.
   Stream<int> get selectedPage => _selectedPage;
-
-  get _closeButton => CustomGestureDetector(
-      child: Container(
-        width: 28,
-        height: 28,
-        child: Icon(
-          Icons.close,
-          size: 20,
-          color: Color(0xff9FA5A6),
-        ),
-      ),
-      decoration: BoxDecoration(shape: BoxShape.circle, color: Color(0xff1d242a)),
-      onPressed: widget.onClosePressed);
-
-  get _faqButton => CustomGestureDetector(
-        child: Container(
-          width: 28,
-          height: 28,
-          child: Center(
-            child: Text(
-              '?',
-              style: TextStyle(
-                fontSize: 20,
-                color: Color(0xff9FA5A6),
-              ),
-            ),
-          ),
-        ),
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Color(0xff1d242a)),
-      );
 
   @override
   void initState() {
@@ -86,7 +66,7 @@ class _StackPagesWidgetState extends State<StackPagesWidget> {
               return Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [_closeButton, _faqButton],
@@ -96,6 +76,8 @@ class _StackPagesWidgetState extends State<StackPagesWidget> {
                       .asMap()
                       .entries
                       .map((stackPageEntry) => AnimatedPlaceholder(
+                            animationCurve: stackPageEntry.value.animationCurve,
+                            animationDuration: stackPageEntry.value.animationDuration,
                             color: stackPageEntry.value.backgroundColor,
                             banner: stackPageEntry.value.banner,
                             maxHeight:
@@ -142,4 +124,34 @@ class _StackPagesWidgetState extends State<StackPagesWidget> {
         return StackPageState.COLLAPSED;
     }
   }
+
+  get _closeButton => CustomGestureDetector(
+      child: Container(
+        width: 28,
+        height: 28,
+        child: Icon(
+          Icons.close,
+          size: 20,
+          color: Color(0xff9FA5A6),
+        ),
+      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: Color(0xff1d242a)),
+      onPressed: widget.onClosePressed);
+
+  get _faqButton => CustomGestureDetector(
+        child: Container(
+          width: 28,
+          height: 28,
+          child: Center(
+            child: Text(
+              '?',
+              style: TextStyle(
+                fontSize: 20,
+                color: Color(0xff9FA5A6),
+              ),
+            ),
+          ),
+        ),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: Color(0xff1d242a)),
+      );
 }

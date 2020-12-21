@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stack_pages/flutter_stack_pages.dart';
 import 'package:flutter_stack_pages/src/model/stack_page.dart';
 
 class AnimatedPlaceholder extends StatelessWidget {
+  ///The widget(page content) that is shown or hidden by this widget.
   final Widget child;
+
+  ///The widget(banner content) that is shown or hidden by this widget.
   final Widget banner;
+
+  ///The maximum height of the page from bottom to top of the screen.
   final double maxHeight;
+
+  ///The [Color] for the background of each page.
   final Color color;
+
+  ///The minimum height of the page from bottom to top of the screen.
   final double minHeight;
+
+  ///The [StackPageState] of the page.
   final StackPageState stackPageState;
+
+  ///The function to be executed on click of the banner.
+
   final Function onBannerTapped;
+
+  ///The [Duration] for animating the page.
+
   final Duration animationDuration;
+
+  ///The [Curve] for animating the page.
   final Curve animationCurve;
 
   AnimatedPlaceholder(
@@ -62,6 +82,8 @@ class AnimatedPlaceholder extends StatelessWidget {
         ));
   }
 
+  /// A getter to get the child widget to be displayed based on the [StackPageState].
+
   Widget get _getChildFromState {
     switch (stackPageState) {
       case StackPageState.ACTIVE:
@@ -87,6 +109,8 @@ class AnimatedPlaceholder extends StatelessWidget {
         return SizedBox();
     }
   }
+
+  /// A getter to get the height of the page to be displayed based on the [StackPageState].
 
   double get _getHeight {
     switch (stackPageState) {
