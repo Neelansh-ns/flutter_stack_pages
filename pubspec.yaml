@@ -1,8 +1,7 @@
 name: flutter_stack_pages
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/Neelansh-ns/flutter_stack_pages
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
